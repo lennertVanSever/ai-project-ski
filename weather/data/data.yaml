@@ -1,6 +1,2 @@
-train: /Users/Lennert/Documents/AI project/lift-occupancy/weather/data/train/images
-val: /Users/Lennert/Documents/AI project/lift-occupancy/weather/data/val/images
-nc: 2
-names:
-- misty
-- clear
+/Users/Lennert/Documents/AI project/lift-occupancy/weather/data/content.yaml
+...
