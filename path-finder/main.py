@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from flask import Flask, jsonify, request
 
 # Adjusted functions to include time
 def add_slope(graph, start, end, weather, difficulty, average_time):
@@ -122,4 +123,45 @@ def draw_graph(graph, path=None):
     plt.show()
 
 # Draw the graph with the path
-draw_graph(ski_resort, path=extended_path)
+# draw_graph(ski_resort, path=extended_path)
+
+
+app = Flask(__name__)
+
+@app.route('/graph')
+def graph():
+    elements = {'nodes': [], 'edges': []}
+    pos = nx.spring_layout(ski_resort)  # Layout for the node positions
+
+    # Add nodes
+    for node in ski_resort.nodes():
+        elements['nodes'].append({
+            'data': {'id': node},
+            'position': {'x': int(1000 * pos[node][0]), 'y': int(1000 * pos[node][1])}
+        })
+
+    # Add edges
+    for source, target, data in ski_resort.edges(data=True):
+        label = f"{data['type']} {data['time']}min"
+        elements['edges'].append({
+            'data': {
+                'source': source,
+                'target': target,
+                'label': label
+            }
+        })
+
+    return jsonify(elements)
+
+
+@app.route('/find_path')
+def find_path():
+    start = request.args.get('start')
+    end = request.args.get('end')
+    desired_time_minutes = int(request.args.get('time', 0))
+    path, _ = find_initial_path_with_time_constraint(ski_resort, start, end, desired_time_minutes)
+    return jsonify({'path': path})
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
