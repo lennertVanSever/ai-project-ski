@@ -1,9 +1,8 @@
 import networkx as nx
 from graph_utils import add_slope, add_lift
 
-def create_ski_resort():
+def create_ski_resort(weights):
     ski_resort = nx.DiGraph()
-    weights = {'weather_weight': 2.0, 'difficulty_weight': 1.5, 'waiting_time_weight': 1.0}
 
     add_slope(ski_resort, 'Peak', 'Intermediate Station', weather=0.7, difficulty=0.6, average_time=15, weights=weights)
     add_slope(ski_resort, 'Intermediate Station', 'Base', weather=0.8, difficulty=0.3, average_time=10, weights=weights)
