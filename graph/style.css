@@ -1,5 +1,6 @@
 body {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -9,6 +10,9 @@ body {
 #cy {
   width: 800px;
   height: 600px;
-  position: relative;
   border: 1px solid black;
+}
+
+.controls {
+  margin-bottom: 20px;
 }
