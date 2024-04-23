@@ -1,9 +1,12 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS, cross_origin
 from initialize_graph import create_ski_resort
 from graph_utils import find_initial_path_with_time_constraint
 import networkx as nx
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # http://0.0.0.0:5001/graph?weather_weight=2.0&difficulty_weight=1.5&waiting_time_weight=1.0
 @app.route('/graph')
