@@ -1,4 +1,5 @@
 import networkx as nx
+import matplotlib.pyplot as plt
 
 # Adjusted functions to include time
 def add_slope(graph, start, end, weather, difficulty, average_time):
@@ -53,20 +54,29 @@ waiting_time_weight = 1.0
 
 ski_resort = nx.DiGraph()
 
-# Adding slopes with average times (minutes)
 add_slope(ski_resort, 'Peak', 'Intermediate Station', weather=0.7, difficulty=0.6, average_time=15)
 add_slope(ski_resort, 'Intermediate Station', 'Base', weather=0.8, difficulty=0.3, average_time=10)
 add_slope(ski_resort, 'Peak', 'Base', weather=0.5, difficulty=0.8, average_time=20)
 add_slope(ski_resort, 'Intermediate Station', 'Lodge', weather=0.9, difficulty=0.2, average_time=8)
 add_slope(ski_resort, 'Lodge', 'Base', weather=1.0, difficulty=0.1, average_time=5)
+add_slope(ski_resort, 'Lodge', 'Peak', weather=0.6, difficulty=0.5, average_time=12)
+add_slope(ski_resort, 'Peak', 'Viewpoint', weather=0.4, difficulty=0.9, average_time=18)
+add_slope(ski_resort, 'Viewpoint', 'Base', weather=0.7, difficulty=0.4, average_time=14)
+add_slope(ski_resort, 'Viewpoint', 'Lodge', weather=0.8, difficulty=0.3, average_time=9)
+add_slope(ski_resort, 'Top Ridge', 'Peak', weather=0.5, difficulty=0.7, average_time=16)
+add_slope(ski_resort, 'Top Ridge', 'Viewpoint', weather=0.6, difficulty=0.8, average_time=20)
 
-# Adding lifts with average times (minutes)
+# Adding many more lifts
 add_lift(ski_resort, 'Base', 'Peak', waiting_time=10, average_time=15)
 add_lift(ski_resort, 'Base', 'Intermediate Station', waiting_time=5, average_time=10)
 add_lift(ski_resort, 'Lodge', 'Peak', waiting_time=7, average_time=12)
+add_lift(ski_resort, 'Base', 'Top Ridge', waiting_time=8, average_time=18)
+add_lift(ski_resort, 'Lodge', 'Viewpoint', waiting_time=6, average_time=11)
+add_lift(ski_resort, 'Intermediate Station', 'Top Ridge', waiting_time=9, average_time=14)
+
 
 # Finding a path with a time constraint
-desired_time_hours = 0.6
+desired_time_hours = 8
 desired_time_minutes = desired_time_hours * 60
 
 # Finding the initial path with a time constraint
@@ -84,3 +94,32 @@ else:
 # Calculate the total time for the extended path
 total_time_extended = sum(ski_resort[extended_path[i]][extended_path[i+1]]['time'] for i in range(len(extended_path)-1))
 print("Total Time for Extended Path (minutes):", total_time_extended)
+
+
+def draw_graph(graph, path=None):
+    pos = nx.spring_layout(graph)  # positions for all nodes
+
+    # Draw the nodes
+    nx.draw_networkx_nodes(graph, pos, node_size=700)
+
+    # Draw the edges
+    nx.draw_networkx_edges(graph, pos, edgelist=graph.edges(), width=2)
+
+    # Draw labels
+    nx.draw_networkx_labels(graph, pos, font_size=12, font_family='sans-serif')
+
+    # Draw edge labels to show weights and times
+    edge_labels = {(u, v): f"{d['weight']:.2f}, {d['time']}min" for u, v, d in graph.edges(data=True)}
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels)
+
+    # Highlight the path if it is provided
+    if path:
+        path_edges = list(zip(path, path[1:]))
+        nx.draw_networkx_edges(graph, pos, edgelist=path_edges, edge_color='r', width=3)
+        nx.draw_networkx_nodes(graph, pos, nodelist=path, node_color='r', node_size=700)
+
+    plt.axis('off')  # Turn off the axis
+    plt.show()
+
+# Draw the graph with the path
+draw_graph(ski_resort, path=extended_path)
