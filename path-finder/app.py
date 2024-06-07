@@ -37,7 +37,11 @@ def graph():
             'data': {
                 'source': source,
                 'target': target,
-                'label': label
+                'label': label,
+                'type': data['type'],
+                'weather': data.get('weather', ''),
+                'difficulty': data.get('difficulty', ''),
+                'time': data.get('time', ''),
             }
         })
 

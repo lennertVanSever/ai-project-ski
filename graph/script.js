@@ -140,8 +140,22 @@ document.addEventListener("DOMContentLoaded", function () {
               "text-background-shape": "roundrectangle",
               "text-background-padding": 3,
               color: "#000",
-              "font-size": "10px",
+              "font-size": "30px",
               "edge-text-rotation": "autorotate",
+              "width": 3
+            },
+          },
+          {
+            selector: 'edge[type="slope"]',
+            style: {
+              "line-color": "black"
+            },
+          },
+          {
+            selector: 'edge[type="lift"]',
+            style: {
+
+              "line-style": "dashed",
             },
           },
           {
@@ -181,6 +195,12 @@ document.addEventListener("DOMContentLoaded", function () {
         if (startNode && endNode) {
           fetchAndDisplayPath(startNode, endNode);
         }
+      });
+
+      // Edge tap event to display metadata
+      cy.on("tap", "edge", function (evt) {
+        const edgeData = this.data();
+        alert(`Edge data: ${JSON.stringify(edgeData, null, 2)}`);
       });
     })
     .catch((error) =>
