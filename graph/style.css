@@ -13,6 +13,21 @@ body {
   border: 1px solid black;
 }
 
+section {
+  display: flex;
+}
+
 .controls {
-  margin-bottom: 20px;
+  margin-right: 10px;
+  width: 200px;
+}
+
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+label span {
+  font-weight: normal;
 }

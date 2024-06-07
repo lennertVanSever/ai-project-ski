@@ -123,6 +123,9 @@ document.addEventListener("DOMContentLoaded", function () {
               color: "#fff",
               "text-outline-width": 2,
               "text-outline-color": "#888",
+              width: "50px",
+              height: "50px",
+              fontSize: "30px"
             },
           },
           {
